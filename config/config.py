@@ -1,0 +1,1 @@
+MYSQL_DATABASE_URI = "mysql+pymysql://root:pengcheng00@localhost:3306/taicang?charset=utf8mb4"
