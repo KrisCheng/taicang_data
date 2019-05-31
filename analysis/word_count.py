@@ -19,27 +19,27 @@ from util.util import *
 d = path.dirname(__file__) if "__file__" in locals() else os.getcwd()
 
 def main_task():
-    job_info = ""
+    category_info = ""
     engine = create_engine(MYSQL_DATABASE_URI)
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
-    all_job_relation = fetch_all_jobrelation(session=session)
-
-    for job_relation in all_job_relation:
-        job_info = job_info + " " + str(job_relation.job_name).strip()
-    # print(job_info)
-
+    print("query start...")
+    all_item = session.execute("select cc.category from case_category as cc, case_info as ci where cc.categorycode = ci.ctype limit 0,10000")
+    print("query end...")
+    for item in all_item:
+        category_info = category_info + " " + str(item.category).strip()
     session.close()
+    # print(category_info)
 
     # Generate a word cloud image
     wordcloud = WordCloud(
-                font_path='/Users/chengpeng/Desktop/workspace/my_project/InternetSurvivalSpider/spider/no_scrapy/analysis/SourceHanSerifK-Light.otf',
-                repeat=False,
-                width=400,
-                height=200,
-                background_color='black',
-                scale=15,
-                ).generate(job_info)
+                font_path='/Users/chengpeng/Desktop/workspace/my_project/taicang_data/analysis/SourceHanSerifK-Light.otf',
+                width=2000,
+                height=1000,
+                max_words=40,
+                collocations=False,
+                background_color='white',
+                ).generate(category_info)
 
     # Display the generated image:
     # the matplotlib way:
